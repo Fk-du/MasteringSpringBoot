@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 
@@ -26,7 +28,10 @@ public class CurrencyExchangeController {
                 currencyExchangeRepository.findByFromAndTo(from, to);
 
         if (currencyExchange == null) {
-            throw new RuntimeException("Currency Exchange not found");
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Currency Exchange not found"
+            );
         }
 
         return currencyExchange;
