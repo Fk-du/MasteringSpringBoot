@@ -1,0 +1,17 @@
+ CURRENCY CONVERSION
+ http://localhost:8100/currency-conversion/from/{from}/to/{to}/quantity/{quantity}
+
+ CURRENCY EXCHANGE
+ http://localhost:8000/currency-exchange/from/{from}/to/{to}
+
+ LIMITS
+ http://localhost:8180/limits
+
+ NAMING SERVER
+ http://localhost:8761
+
+ SPRING CLOUD CONFIG SERVER
+ http://localhost:8888
+
+ API  GATEWAY
+ http://localhost:8765/CURRENCY-EXCHANGE/currency-exchange/from/USD/to/INR
