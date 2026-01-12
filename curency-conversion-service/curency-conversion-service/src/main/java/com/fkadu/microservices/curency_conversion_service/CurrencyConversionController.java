@@ -1,5 +1,6 @@
 package com.fkadu.microservices.curency_conversion_service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +13,10 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("/currency-conversion")
+@RequiredArgsConstructor
 public class CurrencyConversionController {
+
+    private final CurrencyConversionProxy currencyConversionProxy;
 
     @GetMapping("/from/{from}/to/{to}/quantity/{quantity}")
     public CurrencyConversion currencyConversion(@PathVariable String from,
@@ -28,6 +32,20 @@ public class CurrencyConversionController {
                 CurrencyConversion.class, uriVariables);
 
         CurrencyConversion currencyConversion = responseEntity.getBody();
+
+        return new CurrencyConversion(currencyConversion.getId(), from, to, quantity,
+                currencyConversion.getConversionMultiple(),
+                quantity.multiply(currencyConversion.getConversionMultiple()),
+                currencyConversion.getEnvironment());
+    }
+
+    @GetMapping("/feign/from/{from}/to/{to}/quantity/{quantity}")
+    public CurrencyConversion currencyConversionFeign(@PathVariable String from,
+                                                 @PathVariable String to,
+                                                 @PathVariable BigDecimal quantity){
+
+
+        CurrencyConversion currencyConversion = currencyConversionProxy.retrieveCurrencyExchange(from, to);
 
         return new CurrencyConversion(currencyConversion.getId(), from, to, quantity,
                 currencyConversion.getConversionMultiple(),
